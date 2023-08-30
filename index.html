@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Zaps</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="Zap6000">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <div></div>
+            <a class="navbar-brand m-0" href="/">Unofficial FiveM Resources</a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="https://status.cfx.re/" class="btn btn-primary">cfx.re Status</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+        <div class="container mt-5">
+            <div id="posts" class="row">
+            </div>
+        </div>
+
+        <script>
+            const url = 'https://forum.cfx.re/c/development/releases/7';
+            console.log("Website Started | https://discord.gg/cfxdev | Zaps6000")
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, 'text/html');
+                    const posts = doc.querySelectorAll('a.title');
+                    const postsContainer = document.getElementById('posts');
+
+                    posts.forEach(post => {
+                        const postTitle = post.textContent;
+                        let postLink = post.getAttribute('href');
+                        if (!postLink.startsWith('https://')) {
+                            postLink = 'https://forum.cfx.re' + postLink;
+                        }
+                        
+                        const postElement = document.createElement('div');
+                        postElement.classList.add('col-md-4', 'mb-4');
+                        postElement.innerHTML = `
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="card-title"><a href="${postLink}" target="_blank">${postTitle}</a></h3>
+                                </div>
+                            </div>
+                        `;
+                        postsContainer.appendChild(postElement);
+                    });
+                })
+                .catch(error => {
+                    console.log('Er:', error);
+                });
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
